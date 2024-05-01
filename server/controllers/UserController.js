@@ -38,6 +38,21 @@ const adduser =  asyncHandler(async (req, res) => {
     }
 });
 
+// add new item to
+const addNewItem = asyncHandler(async (req, res) => {
+  if(req.body.isSeller == true){
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.body.id, { 
+            $push: { items: req.body.newItem } }, { new: true 
+            });
+        res.json(updatedUser);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+  }
+  res.status(400).json({message:"not a registered seller"})
+})
+
 // Update a user by id
 router.patch('/users/:id', getUser, async (req, res) => {
     if (req.body.name != null) {
@@ -67,7 +82,14 @@ router.delete('/users/:id', getUser, async (req, res) => {
 
 //add an item in the list of favorites
 const addFavorites = asyncHandler(async (req, res)=>{
-    if(req.)
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.body.id, { 
+            $push: { favorite: req.body.newItem } }, { new: true 
+            });
+        res.json(updatedUser);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 })
 
 // Middleware function to get user by id
@@ -86,4 +108,4 @@ async function getUser(req, res, next) {
     next();
 }
 
-export { getAllUsers, adduser };
+export { getAllUsers, adduser, addFavorites, addNewItem};

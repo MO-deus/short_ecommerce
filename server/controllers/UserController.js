@@ -2,15 +2,47 @@ import express from 'express';
 import asyncHandler from 'express-async-handler';
 const router = express.Router();
 import User from '../models/UserModel.js';
+import validator from 'validator';
+import bcrypt from 'bcryptjs'
+import { createToken } from '../utilities/usertoken.js';
+import jwt from 'jsonwebtoken';
+
+// user login
+const loginUser = asyncHandler(async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(500).json({ status: "error", error: "All fields are mandatory" });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(500).json({ status: "error", error: "No user exists with the provided email" });
+        }
+
+        const pass_match = await bcrypt.compare(password, user?.password);
+
+        if (!pass_match) {
+            return res.status(500).json({ status: "error", error: "Wrong password" });
+        }
+
+        const token = await createToken(user.id);
+        return res.status(200).json({ status: "success", data: { token } });
+
+    } catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+});
 
 // GET all users
 const getAllUsers = asyncHandler(async (req, res) => {
-      try {
+    try {
         const users = await User.find();
         res.json(users);
-      } catch (err) {
+    } catch (err) {
         res.status(500).json({ message: err.message });
-      }
+    }
     // res.status(200).json({ message: "Endpoint working" })
 });
 
@@ -21,7 +53,7 @@ router.get('/users/:id', getUser, (req, res) => {
 });
 
 // Create a new user
-const adduser =  asyncHandler(async (req, res) => {
+const adduser = asyncHandler(async (req, res) => {
     // res.json({"message" : "Post"})
     const user = new User({
         name: req.body.name,
@@ -41,17 +73,19 @@ const adduser =  asyncHandler(async (req, res) => {
 // add new item to
 const addNewItem = asyncHandler(async (req, res) => {
     const userId = req.params.id;
-  if(req.body.isSeller == true){
-    try {
-        const updatedUser = await User.findByIdAndUpdate(userId, { 
-            $push: { items: req.body.newItem } }, { new: true 
+    if (req.body.isSeller == true) {
+        try {
+            const updatedUser = await User.findByIdAndUpdate(userId, {
+                $push: { items: req.body.newItem }
+            }, {
+                new: true
             });
-        res.json(updatedUser);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+            res.json(updatedUser);
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
     }
-  }
-  res.status(400).json({message:"not a registered seller"})
+    res.status(400).json({ message: "not a registered seller" })
 })
 
 // Update a user by id
@@ -82,12 +116,14 @@ router.delete('/users/:id', getUser, async (req, res) => {
 });
 
 //add an item in the list of favorites
-const addFavorites = asyncHandler(async (req, res)=>{
+const addFavorites = asyncHandler(async (req, res) => {
     const userId = req.params.id;
     try {
-        const updatedUser = await User.findByIdAndUpdate(userId, { 
-            $push: { favorite: req.body.newItem } }, { new: true 
-            });
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            $push: { favorite: req.body.newItem }
+        }, {
+            new: true
+        });
         res.json(updatedUser);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -110,4 +146,4 @@ async function getUser(req, res, next) {
     next();
 }
 
-export { getAllUsers, adduser, addFavorites, addNewItem};
+export {loginUser,  getAllUsers, adduser, addFavorites, addNewItem };

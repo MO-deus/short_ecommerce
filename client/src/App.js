@@ -14,10 +14,10 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route exact path='/' element={<LandingPage/>} isLoggedIn={isLoggedIn} />
-          <Route path='/login' element={<LoginPage/>} setIsLoggedIn={setIsLoggedIn} />
-          <Route path='signup' element={<SignupPage/>}/>
-          <Route path='/profile' element={<UserProfile/>} />
+          <Route exact path='/' element={<LandingPage />} isLoggedIn={isLoggedIn} />
+          <Route path='/login' element={<LoginPage />} setIsLoggedIn={setIsLoggedIn} />
+          <Route path='signup' element={<SignupPage />} />
+          <Route path='/profile' element={<UserProfile />} />
         </Routes>
       </div>
     </Router>

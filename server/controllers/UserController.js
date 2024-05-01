@@ -40,9 +40,10 @@ const adduser =  asyncHandler(async (req, res) => {
 
 // add new item to
 const addNewItem = asyncHandler(async (req, res) => {
+    const userId = req.params.id;
   if(req.body.isSeller == true){
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.body.id, { 
+        const updatedUser = await User.findByIdAndUpdate(userId, { 
             $push: { items: req.body.newItem } }, { new: true 
             });
         res.json(updatedUser);
@@ -82,8 +83,9 @@ router.delete('/users/:id', getUser, async (req, res) => {
 
 //add an item in the list of favorites
 const addFavorites = asyncHandler(async (req, res)=>{
+    const userId = req.params.id;
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.body.id, { 
+        const updatedUser = await User.findByIdAndUpdate(userId, { 
             $push: { favorite: req.body.newItem } }, { new: true 
             });
         res.json(updatedUser);

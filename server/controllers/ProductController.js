@@ -15,7 +15,7 @@ const getAllProducts = expressAsyncHandler(async (req, res) => {
 });
 
 // Route to create a new product 
-const createProduc = expressAsyncHandler(async (req, res) => {
+const createProduct = expressAsyncHandler(async (req, res) => {
   const product = new Product({
     name: req.body.name,
     description: req.body.description,
@@ -30,4 +30,20 @@ const createProduc = expressAsyncHandler(async (req, res) => {
   }
 });
 
-module.exports = router;
+const updateProduct = expressAsyncHandler(async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updateData = req.body;
+    const updatedProduct = await Product.findByIdAndUpdate(productId, updateData, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json(updatedProduct);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+})
+
+export {getAllProducts, createProduct, updateProduct}

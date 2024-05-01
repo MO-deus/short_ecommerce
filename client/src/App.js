@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
-import LoginPage from './components/LoginPage';
+import Login from "./components/auth/Login";
 import UserProfile from './components/Userprofile';
 import './App.css';
-import SignupPage from './components/SignupPage';
+import Signup from './components/auth/Signup';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,8 +15,8 @@ function App() {
       <div className="App">
         <Routes>
           <Route exact path='/' element={<LandingPage />} isLoggedIn={isLoggedIn} />
-          <Route path='/login' element={<LoginPage />} setIsLoggedIn={setIsLoggedIn} />
-          <Route path='signup' element={<SignupPage />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<Signup />} />
           <Route path='/profile' element={<UserProfile />} />
         </Routes>
       </div>

@@ -10,8 +10,12 @@ db_connection();
 const PORT = process.env.PORT || 5050;
 const app = express();
 
-// app.use(cors);
-app.use(express.json());
+const corsOptions = {
+    credentials: true,
+    origin: ['http://localhost:3000', 'http://localhost:80']
+};
+app.use(cors(corsOptions));app.use(express.json());
+
 app.use("/api/users", userRoute);
 
 app.listen(PORT, () => {

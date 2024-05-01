@@ -11,6 +11,7 @@ const LandingPage = ({ isLoggedIn }) => {
       ) : (
         <Link to="/login">Login</Link>
       )}
+      <br></br>
       <input type="text" placeholder="Search Items" />
       <ul>
         <li>Item 1</li>

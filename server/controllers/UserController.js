@@ -43,7 +43,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-    // res.status(200).json({ message: "Endpoint working" })
 });
 
 // GET one user by id
@@ -146,4 +145,4 @@ async function getUser(req, res, next) {
     next();
 }
 
-export {loginUser,  getAllUsers, adduser, addFavorites, addNewItem };
+export { loginUser, getAllUsers, adduser, addFavorites, addNewItem };

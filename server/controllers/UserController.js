@@ -6,7 +6,7 @@ import validator from 'validator';
 import bcrypt from 'bcryptjs'
 import { createToken } from '../utilities/usertoken.js';
 import jwt from 'jsonwebtoken';
-
+import Product from '../models/ProductModel.js';
 // user login
 const loginUser = asyncHandler(async (req, res) => {
     try {
@@ -22,13 +22,13 @@ const loginUser = asyncHandler(async (req, res) => {
         }
 
         const pass_match = await bcrypt.compare(password, user?.password);
-
+        const uid = user.id;
         if (!pass_match) {
             return res.status(500).json({ status: "error", error: "Wrong password" });
         }
 
         const token = await createToken(user.id);
-        return res.status(200).json({ status: "success", data: { token } });
+        return res.status(200).json({ status: "success", data: { token, uid } });
 
     } catch (err) {
         res.status(400).json({ message: err.message })
@@ -47,8 +47,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 // GET one user by id
 // endpoint : /users/:id
-router.get('/users/:id', getUser, (req, res) => {
-    res.json(res.user);
+const getUserById = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    res.json(user);
 });
 
 // Create a new user
@@ -63,7 +64,9 @@ const adduser = asyncHandler(async (req, res) => {
 
     try {
         const newUser = await user.save();
-        res.status(201).json(newUser);
+        const uid =  newUser.id;
+        const token = await createToken(newUser.id);
+        return res.status(200).json({ status: "success", data: { token, uid} });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -72,10 +75,10 @@ const adduser = asyncHandler(async (req, res) => {
 // add new item to
 const addNewItem = asyncHandler(async (req, res) => {
     const userId = req.params.id;
-    if (req.body.isSeller == true) {
+    // if (req.body.isSeller == true) {
         try {
             const updatedUser = await User.findByIdAndUpdate(userId, {
-                $push: { items: req.body.newItem }
+                $push: { items: req.body.itemid }
             }, {
                 new: true
             });
@@ -83,7 +86,7 @@ const addNewItem = asyncHandler(async (req, res) => {
         } catch (err) {
             res.status(500).json({ message: err.message });
         }
-    }
+    // }
     res.status(400).json({ message: "not a registered seller" })
 })
 
@@ -145,4 +148,4 @@ async function getUser(req, res, next) {
     next();
 }
 
-export { loginUser, getAllUsers, adduser, addFavorites, addNewItem };
+export { loginUser, getAllUsers, adduser, addFavorites, addNewItem, getUserById };

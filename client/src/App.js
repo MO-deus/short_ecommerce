@@ -6,6 +6,7 @@ import Login from "./components/auth/Login";
 import UserProfile from './components/Userprofile';
 import './App.css';
 import Signup from './components/auth/Signup';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -18,6 +19,7 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route path='/profile' element={<UserProfile />} />
+          <Route path='/dashboard/:uid' element={<Dashboard />} />
         </Routes>
       </div>
     </Router>

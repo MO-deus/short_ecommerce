@@ -1,11 +1,8 @@
-// Import necessary modules
-const express = require('express');
-const router = express.Router();
-const Product = require('../models/Product');
-const expressAsyncHandler = require('express-async-handler');
+import Product from '../models/ProductModel.js';
+import asyncHandler from  'express-async-handler';
 
 // Route to get all products
-const getAllProducts = expressAsyncHandler(async (req, res) => {
+const getAllProducts = asyncHandler(async (req, res) => {
   try {
     const products = await Product.find();
     res.json(products);
@@ -15,7 +12,7 @@ const getAllProducts = expressAsyncHandler(async (req, res) => {
 });
 
 // Route to create a new product 
-const createProduct = expressAsyncHandler(async (req, res) => {
+const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     name: req.body.name,
     description: req.body.description,
@@ -30,7 +27,7 @@ const createProduct = expressAsyncHandler(async (req, res) => {
   }
 });
 
-const updateProduct = expressAsyncHandler(async (req, res) => {
+const updateProduct = asyncHandler(async (req, res) => {
   try {
     const productId = req.params.id;
     const updateData = req.body;

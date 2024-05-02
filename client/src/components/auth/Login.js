@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
+    const history = useNavigate();
+
     const [useremail, setUsermail] = useState('');
     const [userpassword, setUserpassword] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState('');
     const [error, setError] = useState('');
 
     const handleLogin = async () => {
@@ -25,17 +29,23 @@ const Login = () => {
                 throw new Error('Invalid credentials');
             }
 
-            const { token } = await response.json();
+            const responseData = await response.json();
+            localStorage.setItem('token', responseData.data.token);
+            setIsLoggedIn(true);
+            
+            history(`/dashboard/${responseData.data.uid}`);
 
-            localStorage.setItem('token', token);
-
-            // Redirect to the dashboard or another page upon successful login
-            // Replace '/dashboard' with the actual path
-            window.location.href = '/dashboard';
         } catch (error) {
             setError(error.message);
         }
     };
+
+    const handleLogout = () => {
+        // handle logout logic
+        setIsLoggedIn(false);
+        localStorage.removeItem('token'); 
+        window.location.href = '/';
+    }
 
     return (
         <div>
@@ -49,6 +59,7 @@ const Login = () => {
                 <input type="password" value={userpassword} onChange={(e) => setUserpassword(e.target.value)} />
             </div>
             <button onClick={handleLogin}>Login</button>
+            <button onClick={handleLogout}>Logout</button>
             {error && <div>{error}</div>}
             <div>
                 Not a registered user ? <Link to = '/signup'>signup</Link>

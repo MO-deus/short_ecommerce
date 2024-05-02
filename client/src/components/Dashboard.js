@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { UNSAFE_ErrorResponseImpl, useParams } from 'react-router-dom';
+import { Redirect, useNavigate } from 'react-router-dom';
+import { Link, UNSAFE_ErrorResponseImpl, useParams } from 'react-router-dom';
 
 function Dashboard({ userId }) {
     const [itemName, setItemName] = useState('');
@@ -11,7 +12,7 @@ function Dashboard({ userId }) {
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-
+    const navigate = useNavigate();
     useEffect(() => {
         setIsLoading(true);
         // Fetch user data based on the provided userId
@@ -64,6 +65,10 @@ function Dashboard({ userId }) {
         }
     };
 
+    const moveToMainPage = () => {
+        navigate('/', { state: { uid } });
+    };
+
     return (
         <div>
             <h1>Dashboard</h1>
@@ -105,6 +110,7 @@ function Dashboard({ userId }) {
             ) : (
                 <p>No user data found for user ID: {uid}</p>
             )}
+            <button onClick={moveToMainPage}>Main page</button>
         </div>
     );
 }

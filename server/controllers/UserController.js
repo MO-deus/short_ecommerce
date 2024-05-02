@@ -122,7 +122,7 @@ const addFavorites = asyncHandler(async (req, res) => {
     const userId = req.params.id;
     try {
         const updatedUser = await User.findByIdAndUpdate(userId, {
-            $push: { favorite: req.body.newItem }
+            $push: { favorite: req.body.item }
         }, {
             new: true
         });

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     const history = useNavigate();
@@ -68,6 +68,7 @@ const Signup = () => {
                 <button type="submit">Signup</button>
             </form>
             {error && <div>{error}</div>}
+            <div>Already registered ? <Link to='/login'> Login </Link> </div>
         </div>
     );
 };

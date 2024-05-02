@@ -12,8 +12,8 @@ const Login = () => {
 
     const handleLogin = async () => {
         const postData = {
-            email : useremail,
-            password : userpassword,
+            email: useremail,
+            password: userpassword,
         }
         console.log(postData);
         try {
@@ -22,7 +22,7 @@ const Login = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(postData) ,
+                body: JSON.stringify(postData),
             });
 
             if (!response.ok) {
@@ -32,20 +32,13 @@ const Login = () => {
             const responseData = await response.json();
             localStorage.setItem('token', responseData.data.token);
             setIsLoggedIn(true);
-            
+
             history(`/dashboard/${responseData.data.uid}`);
 
         } catch (error) {
             setError(error.message);
         }
     };
-
-    const handleLogout = () => {
-        // handle logout logic
-        setIsLoggedIn(false);
-        localStorage.removeItem('token'); 
-        window.location.href = '/';
-    }
 
     return (
         <div>
@@ -59,10 +52,9 @@ const Login = () => {
                 <input type="password" value={userpassword} onChange={(e) => setUserpassword(e.target.value)} />
             </div>
             <button onClick={handleLogin}>Login</button>
-            <button onClick={handleLogout}>Logout</button>
             {error && <div>{error}</div>}
             <div>
-                Not a registered user ? <Link to = '/signup'>signup</Link>
+                Not a registered user ? <Link to='/signup'>signup</Link>
             </div>
         </div>
     );

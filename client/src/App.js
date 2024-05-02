@@ -18,7 +18,7 @@ function App() {
           <Route exact path='/' element={<LandingPage />} isLoggedIn={isLoggedIn} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route path='/profile' element={<UserProfile />} />
+          <Route path='/profile' element={<UserProfile />} /> 
           <Route path='/dashboard/:uid' element={<Dashboard />} />
         </Routes>
       </div>

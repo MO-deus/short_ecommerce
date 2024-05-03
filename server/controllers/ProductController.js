@@ -1,7 +1,6 @@
 import Product from '../models/ProductModel.js';
 import asyncHandler from  'express-async-handler';
 
-// Route to get all products
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
     const products = await Product.find();
@@ -11,7 +10,6 @@ const getAllProducts = asyncHandler(async (req, res) => {
   }
 });
 
-// Route to create a new product 
 const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     name: req.body.name,
@@ -43,4 +41,32 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 })
 
-export {getAllProducts, createProduct, updateProduct}
+const findProductById = asyncHandler(async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if(!product) {
+      return res.status(500).json({message : 'Product not found'});
+    }
+    return res.status(200).json(product);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+
+})
+
+const deleteProductById = asyncHandler(async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const product = await Product.findByIdAndDelete(productId);
+    if(!product) {
+      return res.status(500).json({message : 'product does not exists in the database'});
+    }
+    return res.status(200).json(product);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+
+})
+
+export {getAllProducts, createProduct, updateProduct, findProductById, deleteProductById}

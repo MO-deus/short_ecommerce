@@ -33,7 +33,8 @@ const Login = () => {
             localStorage.setItem('token', responseData.data.token);
             setIsLoggedIn(true);
 
-            history(`/dashboard/${responseData.data.uid}`);
+            const uid = responseData.data.uid;
+            history(`/dashboard`, {state : {uid}});
 
         } catch (error) {
             setError(error.message);

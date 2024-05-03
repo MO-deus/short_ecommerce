@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Redirect, useNavigate } from 'react-router-dom';
-import { Link, UNSAFE_ErrorResponseImpl, useParams } from 'react-router-dom';
+import { Redirect, useLocation, useNavigate } from 'react-router-dom';
+import Useritem from './Useritem';
 
 function Dashboard({ userId }) {
+    const location = useLocation();
     const [itemName, setItemName] = useState('');
     const [itemDesc, setItemDesc] = useState('');
     const [itemPrice, setItemPrice] = useState('');
     const [itemId, setItemId] = useState('');
-    const { uid } = useParams();
+    const uid = location.state.uid;
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    
     useEffect(() => {
         setIsLoading(true);
         // Fetch user data based on the provided userId
@@ -34,36 +36,31 @@ function Dashboard({ userId }) {
             setIsLoading(true);
             const productCreation = await axios.post('http://localhost:5055/api/products/createproduct', { name: itemName, description: itemDesc, price: itemPrice })
                 .then(response => {
-                    // Item added successfully
                     console.log('Item id :', response.data._id);
-                    // console.log(uid);
-                    // Clear the input field
                     setItemName('');
                     setItemId(response.data._id)
                     setIsLoading(false);
                     setError(null);
                 })
                 .catch(error => {
-                    // Error occurred while adding item
                     console.error('Error adding item:', error);
                     setError('Error adding item. Please try again later.');
                     setIsLoading(false);
                 });
         }
         if (itemId != "") {
-            // setIsLoading(true);
-            const addItemResp = await  axios.patch(`http://localhost:5055/api/users/addItem/${uid}`, { itemid: itemId })
+            const addItemResp = await axios.patch(`http://localhost:5055/api/users/addItem/${uid}`, { itemid: itemId })
                 .then(response => {
                     console.log(response.data);
                     setItemId('');
-                    // setIsLoading(false);
                 })
                 .catch(error => {
                     console.error('Error in adding item to the current users listing')
-                    // setIsLoading(false);
                 })
         }
     };
+
+    console.log(uid);
 
     const moveToMainPage = () => {
         navigate('/', { state: { uid } });
@@ -76,10 +73,25 @@ function Dashboard({ userId }) {
                 <p>Loading user data...</p>
             ) : userData ? (
                 <div>
-                    <p>User ID: {userData._id}</p>
-                    <p>User Name: {userData.name}</p>
-                    <p>User Email: {userData.email}</p>
-                    <p>items: {userData.items}</p>
+                    <div class="user-info">
+                        <p class="name">Name: {userData.name}</p>
+                        <p class="email">Email: {userData.email}</p>
+                    </div>
+                    <table className='center'>
+                        <tr key={'Product Table'}>
+                            <th>Product name</th>
+                            <th>Product Id</th>
+                            <th>Delete</th>
+                        </tr>
+                        <h4>Listed Items</h4>
+                        {userData.items.map(itemId => (
+                            <Useritem userId={uid} productId={itemId} isListedItem={true} />
+                        ))}
+                        <h4>Favorites Items</h4>
+                        {userData.favorite.map(itemId => (
+                            <Useritem userId={uid} productId={itemId} isListedItem={false} />
+                        ))}
+                    </table>
                     {userData.isSeller == true ? (
                         <div>
                             <h2>Add Item</h2>

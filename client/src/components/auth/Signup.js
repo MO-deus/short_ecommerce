@@ -33,11 +33,10 @@ const Signup = () => {
                 throw new Error('Failed to signup');
             }
 
-            // Handle successful signup here
             const responseData = await response.json();
             localStorage.setItem('token', responseData.data.token);
-            // window.location.href = '/dashboard';
-            history(`/dashboard/${responseData.data.uid}`)
+            const uid = responseData.data.uid;
+            history(`/dashboard`, {state : {uid}});
         } catch (error) {
             setError(error.message);
         }

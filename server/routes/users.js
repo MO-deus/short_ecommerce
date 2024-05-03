@@ -1,4 +1,4 @@
-import { addFavorites, addNewItem, adduser, getAllUsers, getUserById, loginUser } from '../controllers/UserController.js';
+import { addFavorites, addNewItem, adduser, getAllUsers, getUserById, loginUser, removeFavorite } from '../controllers/UserController.js';
 import express from 'express'
 const router = express.Router();
 
@@ -8,4 +8,6 @@ router.route('/addusers').post(adduser);
 router.route('/addfavorite/:id').patch(addFavorites);
 router.route('/addItem/:id').patch(addNewItem);
 router.route('/:id').get(getUserById);
+router.route('/removeFav').delete(removeFavorite);
+
 export default router;

@@ -5,9 +5,7 @@ import User from '../models/UserModel.js';
 import validator from 'validator';
 import bcrypt from 'bcryptjs'
 import { createToken } from '../utilities/usertoken.js';
-import jwt from 'jsonwebtoken';
-import Product from '../models/ProductModel.js';
-// user login
+
 const loginUser = asyncHandler(async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -35,7 +33,6 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 });
 
-// GET all users
 const getAllUsers = asyncHandler(async (req, res) => {
     try {
         const users = await User.find();
@@ -45,16 +42,25 @@ const getAllUsers = asyncHandler(async (req, res) => {
     }
 });
 
-// GET one user by id
-// endpoint : /users/:id
 const getUserById = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
     res.json(user);
 });
 
-// Create a new user
 const adduser = asyncHandler(async (req, res) => {
-    // res.json({"message" : "Post"})
+
+    if (!validator.isEmail(req.body.email)) {
+        return res
+            .status(500)
+            .json({ status: "error", error: "Enter a valid email" });
+    }
+
+    // if (!validator.isStrongPassword(password)) {
+    //     return res
+    //     .status(500)
+    //     .json({ status: "error", error: "Password is not strong enough" });
+    // }
+
     const user = new User({
         name: req.body.name,
         email: req.body.email,
@@ -64,33 +70,29 @@ const adduser = asyncHandler(async (req, res) => {
 
     try {
         const newUser = await user.save();
-        const uid =  newUser.id;
+        const uid = newUser.id;
         const token = await createToken(newUser.id);
-        return res.status(200).json({ status: "success", data: { token, uid} });
+        return res.status(200).json({ status: "success", data: { token, uid } });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
 });
 
-// add new item to
 const addNewItem = asyncHandler(async (req, res) => {
     const userId = req.params.id;
-    // if (req.body.isSeller == true) {
-        try {
-            const updatedUser = await User.findByIdAndUpdate(userId, {
-                $push: { items: req.body.itemid }
-            }, {
-                new: true
-            });
-            res.json(updatedUser);
-        } catch (err) {
-            res.status(500).json({ message: err.message });
-        }
-    // }
+    try {
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            $push: { items: req.body.itemid }
+        }, {
+            new: true
+        });
+        res.json(updatedUser);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
     res.status(400).json({ message: "not a registered seller" })
 })
 
-// Update a user by id
 router.patch('/users/:id', getUser, async (req, res) => {
     if (req.body.name != null) {
         res.user.name = req.body.name;
@@ -107,7 +109,6 @@ router.patch('/users/:id', getUser, async (req, res) => {
     }
 });
 
-// Delete a user by id
 router.delete('/users/:id', getUser, async (req, res) => {
     try {
         await res.user.remove();
@@ -117,7 +118,6 @@ router.delete('/users/:id', getUser, async (req, res) => {
     }
 });
 
-//add an item in the list of favorites
 const addFavorites = asyncHandler(async (req, res) => {
     const userId = req.params.id;
     try {
@@ -129,6 +129,27 @@ const addFavorites = asyncHandler(async (req, res) => {
         res.json(updatedUser);
     } catch (err) {
         res.status(500).json({ message: err.message });
+    }
+})
+
+const removeFavorite = asyncHandler(async (req, res) => {
+    const { userId, productId } = req.params;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        if (!user.favorites.includes(productId)) {
+            return res.status(404).json({ error: 'Product not found in favorites' });
+        }
+        user.favorites.pull(productId);
+        await user.save();
+
+        res.json({ message: 'Product removed from favorites', user });
+    } catch (error) {
+        console.error('Error removing product from favorites:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 })
 
@@ -148,4 +169,4 @@ async function getUser(req, res, next) {
     next();
 }
 
-export { loginUser, getAllUsers, adduser, addFavorites, addNewItem, getUserById };
+export { loginUser, getAllUsers, adduser, addFavorites, addNewItem, getUserById, removeFavorite };

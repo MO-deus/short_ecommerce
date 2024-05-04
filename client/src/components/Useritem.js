@@ -9,7 +9,7 @@ const Useritem = ({ userId, productId, isListedItem }) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`https://short-ecommerce-backend-kush-waikars-projects.vercel.app/api/products/getProductById/${productId}`);
+                const response = await fetch(`https://short-ecommerce-backend-4vu8n14nz-kush-waikars-projects.vercel.app/api/products/getProductById/${productId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch product details');
                 }
@@ -27,7 +27,7 @@ const Useritem = ({ userId, productId, isListedItem }) => {
 
     const handleListedDelete = async () => {
         try {
-            await axios.delete(`https://short-ecommerce-backend-kush-waikars-projects.vercel.app/api/products/deleteProductById/${productId}`);
+            await axios.delete(`https://short-ecommerce-backend-4vu8n14nz-kush-waikars-projects.vercel.app/api/products/deleteProductById/${productId}`);
             setProducts(products.filter(product => product.id !== productId));
         } catch (error) {
             console.error('Error deleting product:', error);
@@ -36,7 +36,7 @@ const Useritem = ({ userId, productId, isListedItem }) => {
 
     const handlefavoriteDelete = async () => {
         try {
-            await axios.delete(`https://short-ecommerce-backend-kush-waikars-projects.vercel.app/api/users/removeFav`, { userId: userId, productId: productId });
+            await axios.delete(`https://short-ecommerce-backend-4vu8n14nz-kush-waikars-projects.vercel.app/api/users/removeFav`, { userId: userId, productId: productId });
         } catch (error) {
             console.error('Error deleting product:', error);
         }

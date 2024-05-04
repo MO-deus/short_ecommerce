@@ -18,7 +18,7 @@ function Dashboard({ userId }) {
     useEffect(() => {
         setIsLoading(true);
         // Fetch user data based on the provided userId
-        axios.get(`https://short-ecommerce-backend-kush-waikars-projects.vercel.app/api/users/${uid}`)
+        axios.get(`https://short-ecommerce-backend-4vu8n14nz-kush-waikars-projects.vercel.app/api/users/${uid}`)
             .then(response => {
                 // Set user data in state
                 // console.log(response.data);
@@ -34,7 +34,7 @@ function Dashboard({ userId }) {
     const handleAddItem = async () => {
         if (itemName.trim() !== '') {
             setIsLoading(true);
-            const productCreation = await axios.post('https://short-ecommerce-backend-kush-waikars-projects.vercel.app/api/products/createproduct', { name: itemName, description: itemDesc, price: itemPrice })
+            const productCreation = await axios.post('https://short-ecommerce-backend-4vu8n14nz-kush-waikars-projects.vercel.app/api/products/createproduct', { name: itemName, description: itemDesc, price: itemPrice })
                 .then(response => {
                     console.log('Item id :', response.data._id);
                     setItemName('');
@@ -49,7 +49,7 @@ function Dashboard({ userId }) {
                 });
         }
         if (itemId != "") {
-            const addItemResp = await axios.patch(`https://short-ecommerce-backend-kush-waikars-projects.vercel.app/api/users/addItem/${uid}`, { itemid: itemId })
+            const addItemResp = await axios.patch(`https://short-ecommerce-backend-4vu8n14nz-kush-waikars-projects.vercel.app/api/users/addItem/${uid}`, { itemid: itemId })
                 .then(response => {
                     console.log(response.data);
                     setItemId('');

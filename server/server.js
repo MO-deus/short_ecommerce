@@ -10,12 +10,9 @@ db_connection();
 
 const PORT = process.env.PORT || 5050;
 const app = express();
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, PATCH, DELETE");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    next();
-});
+app.use(cors({
+    origin: 'https://short-ecommerce-frontend.vercel.app'
+}));
 
 app.use(express.json());
 

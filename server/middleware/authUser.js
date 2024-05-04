@@ -1,4 +1,4 @@
-import User from "../models/UserModel";
+import User from "../models/UserModel.js";
 
 const authenticateUser = (req, res, next) => {
     const { email, password } = req.headers;

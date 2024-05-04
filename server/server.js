@@ -10,12 +10,11 @@ db_connection();
 
 const PORT = process.env.PORT || 5050;
 const app = express();
-app.use(cors({
-    origin: '*'
-}));
+app.use(cors());
 
 app.use(express.json());
 
+app.get("/", (req, res) => {res.status(200).json({message : "Endpoint working"}); });
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
 

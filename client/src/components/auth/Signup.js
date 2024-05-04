@@ -21,7 +21,7 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://short-ecommerce.vercel.app/api/users/addUsers', {
+            const response = await fetch('https://short-ecommerce-backend.vercel.app/api/users/addUsers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

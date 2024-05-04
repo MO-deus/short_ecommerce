@@ -6,7 +6,7 @@ const ItemList = ({ products, isLoggedIn, userid }) => {
   const [favorites, setFavorites] = useState([]);
   const handleAddToFavorites = (productId) => {
     console.log(productId);
-    axios.patch(`http://localhost:5055/api/users/addfavorite/${userid}`, { item: productId })
+    axios.patch(`https://short-ecommerce.vercel.app/api/users/addfavorite/${userid}`, { item: productId })
       .then(response => {
         setFavorites([...favorites, response.data]);
       })

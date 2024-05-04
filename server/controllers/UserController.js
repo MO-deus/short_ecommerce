@@ -133,7 +133,8 @@ const addFavorites = asyncHandler(async (req, res) => {
 })
 
 const removeFavorite = asyncHandler(async (req, res) => {
-    const { userId, productId } = req.body;
+    const userId = req.body.userId;
+    const productId = req.body.productId;
 
     try {
         const user = await User.findById(userId);

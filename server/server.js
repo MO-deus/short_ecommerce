@@ -13,7 +13,7 @@ const app = express();
 
 const corsOptions = {
     credentials: true,
-    origin: ['http://localhost:3000', 'http://localhost:80']
+    origin: ['https://short-ecommerce.vercel.app', 'http://localhost:3000']
 };
 app.use(cors(corsOptions));
 app.use(express.json());

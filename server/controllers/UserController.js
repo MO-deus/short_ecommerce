@@ -136,8 +136,6 @@ const removeFavorite = asyncHandler(async (req, res) => {
     const userId = req.body.userid;
     const productId = req.body.productid;
 
-    // return res.status(200).json(userId);
-
     try {
         const user = await User.findById(userId);
         if (!user) {

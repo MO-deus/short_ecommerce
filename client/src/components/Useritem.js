@@ -36,7 +36,7 @@ const Useritem = ({ userId, productId, isListedItem }) => {
 
     const handlefavoriteDelete = async () => {
         try {
-            await axios.delete(`https://short-ecommerce-backendapi.vercel.app/api/users/removeFav`, { userid: userId, productid: productId });
+            await axios.delete(`https://short-ecommerce-backendapi.vercel.app/api/users/removeFav`, { "userid": userId, "productid": productId });
         } catch (error) {
             console.error('Error deleting product:', error);
         }

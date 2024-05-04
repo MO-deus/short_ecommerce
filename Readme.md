@@ -1,0 +1,14 @@
+- ### Setup instructions
+	- Clone the repo by running : `git clone https://github.com/MO-deus/short_ecommerce.git`.
+	- create the .env file with following values and store it in the server folder
+		- `MONGO_URL` , `PORT` , `SECRET` 
+	- run the following command inside `server` in order to install the dependencies `npm install` and to start the server in development mode run `nodemon server.js`
+	- In a new terminal run the following command inside `client` folder in order to install dependencies : `npm install` . To run the server in local run the command `npm start`
+	- `localhost:5055` for testing the server and `localhost:3000` for testing the client.
+
+- ### Assumptions
+	- There will be 2 types of users : seller and visitor
+		- only sellers can list items whereas the visitor cannot
+		- The dashboard will provide with the option for listing an item and adding an item to favorite 
+	- User will not be able to add any item to its favorite list unless it is logged in
+	- there are 4 main pages : `landingPage` `Login` `Signup` `Dashboard`

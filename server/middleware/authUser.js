@@ -1,4 +1,4 @@
-import User from "../../../server/models/UserModel";
+import User from "../models/UserModel";
 
 const authenticateUser = (req, res, next) => {
     const { email, password } = req.headers;
@@ -17,4 +17,4 @@ const authenticateUser = (req, res, next) => {
     next();
 };
 
-module.exports = authenticateUser;
+export default authenticateUser;

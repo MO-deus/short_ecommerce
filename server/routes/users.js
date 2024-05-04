@@ -1,5 +1,6 @@
 import { addFavorites, addNewItem, adduser, getAllUsers, getUserById, loginUser, removeFavorite } from '../controllers/UserController.js';
 import express from 'express'
+import authenticateUser from '../middleware/authUser.js'
 const router = express.Router();
 
 router.route('/login').post(loginUser);

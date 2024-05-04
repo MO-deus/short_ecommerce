@@ -136,15 +136,17 @@ const removeFavorite = asyncHandler(async (req, res) => {
     const userId = req.body.userid;
     const productId = req.body.productid;
 
+    // return res.status(200).json(userId);
+
     try {
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        if (!user.favorites.includes(productId)) {
+        if (!user.favorite.includes(productId)) {
             return res.status(404).json({ error: 'Product not found in favorites' });
         }
-        user.favorites.pull(productId);
+        user.favorite.pull(productId);
         await user.save();
 
         res.json({ message: 'Product removed from favorites', user });

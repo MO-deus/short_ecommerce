@@ -10,7 +10,9 @@ db_connection();
 
 const PORT = process.env.PORT || 5050;
 const app = express();
-app.use(cors());
+app.use(cors({
+    "origin" : "https://short-ecommerce-frontend-2sp9ygkip-kush-waikars-projects.vercel.app"
+}));
 
 app.use(express.json());
 

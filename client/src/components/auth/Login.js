@@ -17,7 +17,7 @@ const Login = () => {
         }
         console.log(postData);
         try {
-            const response = await fetch('https://short-ecommerce-backend.vercel.app/api/users/login', {
+            const response = await fetch('https://short-ecommerce.vercel.app/api/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

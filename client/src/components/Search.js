@@ -7,7 +7,7 @@ const SearchBar = ({products, uid, isLoggedin}) => {
 
   const handleAddToFavorites = (productId) => {
     console.log(productId);
-    axios.patch(`https://short-ecommerce.vercel.app/api/users/addfavorite/${uid}`, { item: productId })
+    axios.patch(`http://localhost:5055/api/users/addfavorite/${uid}`, { item: productId })
       .catch(error => {
         console.error('Error adding product to favorites:', error);
       });

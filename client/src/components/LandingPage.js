@@ -13,7 +13,7 @@ function LandingPage() {
   const uid = location.state && location.state.uid
 
   useEffect(() => {
-    axios.get('https://short-ecommerce.vercel.app/api/products/getallproducts')
+    axios.get('http://localhost:5055/api/products/getallproducts')
       .then(response => {
         setProducts(response.data);
         setIsLoading(false);

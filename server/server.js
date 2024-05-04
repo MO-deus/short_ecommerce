@@ -11,7 +11,7 @@ db_connection();
 const PORT = process.env.PORT || 5050;
 const app = express();
 app.use(cors({
-    origin: 'https://short-ecommerce-frontend.vercel.app'
+    origin: '*'
 }));
 
 app.use(express.json());
